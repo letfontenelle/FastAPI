@@ -18,7 +18,7 @@ app = FastAPI()
 # MongoDB setup
 mongo_uri = os.environ['MONGO_AUTH']
 client = MongoClient(mongo_uri)
-db = client['smartbids']
+db = client['chagasai']
 users_collection = db['users']
 leads_collection = db['leads']
 
@@ -39,10 +39,10 @@ class LeadSchema(BaseModel):
 
 def send_email(subject, message, to_address):
     # Your send_email logic, unchanged from before
-    from_address = 'ryan@smartbids.ai'
+    from_address = 'ryan@chagasai.ai'
     password = os.getenv("EMAIL_PASS")
     msg = MIMEMultipart()
-    msg['From'] = "SmartBids.ai - Email verification <" + from_address + ">"
+    msg['From'] = "chagasai.ai - Email verification <" + from_address + ">"
     msg['To'] = to_address
     msg['Subject'] = subject
     msg.attach(MIMEText(message, 'html'))
@@ -83,7 +83,7 @@ async def create_lead(lead: LeadSchema):
         })
 
     # [Rest of your email generation and sending logic]
-    msg = f'<p>Welcome to SmartBids.ai, {lead.name}!</p><p>Please click on the following link to verify your email:</p><a href="{email_base_url}/verify_client?token={token}&email={quote(lead.email)}&phone={quote(lead.phone)}&db_type=leads">Verify Email</a><p>Thank you,</p><p>SmartBids.ai Team</p>'
+    msg = f'<p>Welcome to chagasai.ai, {lead.name}!</p><p>Please click on the following link to verify your email:</p><a href="{email_base_url}/verify_client?token={token}&email={quote(lead.email)}&phone={quote(lead.phone)}&db_type=leads">Verify Email</a><p>Thank you,</p><p>chagasai.ai Team</p>'
     subject = 'Email verification'
     send_email(subject, msg, lead.email)
 
@@ -116,7 +116,7 @@ async def send_verification(email: EmailSchema):
         })
 
     # [Rest of your email generation and sending logic]
-    msg = f'<p>Welcome to SmartBids.ai!</p><p>Please click on the following link to verify your email:</p><a href="{email_base_url}/verify_client?token={token}&email={quote(email.email)}&db_type=users">Verify Email</a><p>Thank you,</p><p>SmartBids.ai Team</p>'
+    msg = f'<p>Welcome to chagasai.ai!</p><p>Please click on the following link to verify your email:</p><a href="{email_base_url}/verify_client?token={token}&email={quote(email.email)}&db_type=users">Verify Email</a><p>Thank you,</p><p>chagasai.ai Team</p>'
     subject = 'Email verification'
     send_email(subject, msg, email.email)
 
@@ -133,7 +133,7 @@ async def verify_client(token: str, email: str, phone: Optional[str] = None, db_
             return """
             <h1>This email has already been verified!</h1>
             <p>You are fully verified and can now login.</p>
-            <a href="https://app.smartbids.ai">Click here to login</a>
+            <a href="https://app.chagasai.ai">Click here to login</a>
             """
         else:
             collection.update_one(
@@ -143,7 +143,7 @@ async def verify_client(token: str, email: str, phone: Optional[str] = None, db_
             return """
             <h1>Your email has been successfully verified!</h1>
             <p>You are fully verified and can now login.</p>
-            <a href="https://app.smartbids.ai">Click here to login</a>
+            <a href="https://app.chagasai.ai">Click here to login</a>
             """
 
     raise HTTPException(status_code=400, detail="Invalid token or email")
