@@ -43,7 +43,7 @@ async def root():
 
 def send_email(subject, message, to_address):
     # Your send_email logic, unchanged from before
-    from_address = 'ryan@chagasai.ai'
+    from_address = 'ssaudequest@gmail.com'
     password = os.getenv("EMAIL_PASS")
     msg = MIMEMultipart()
     msg['From'] = "chagasai.ai - Email verification <" + from_address + ">"
@@ -151,3 +151,6 @@ async def verify_client(token: str, email: str, phone: Optional[str] = None, db_
             """
 
     raise HTTPException(status_code=400, detail="Invalid token or email")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
