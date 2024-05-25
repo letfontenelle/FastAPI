@@ -8,6 +8,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import secrets
 import os
+import uvicorn
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
@@ -36,6 +37,9 @@ class LeadSchema(BaseModel):
     phone: str
     id: Optional[str]
 
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 def send_email(subject, message, to_address):
     # Your send_email logic, unchanged from before
@@ -147,4 +151,3 @@ async def verify_client(token: str, email: str, phone: Optional[str] = None, db_
             """
 
     raise HTTPException(status_code=400, detail="Invalid token or email")
-
